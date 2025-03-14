@@ -214,6 +214,7 @@ class AvitoParse:
 
     def __pretty_log(self, data):
         """Красивый вывод для Telegram"""
+        geo = data.get("geo")
         price = data.get("price", "-")
         name = data.get("name", "-")
         id_ = data.get("id", "-")
@@ -222,7 +223,7 @@ class AvitoParse:
         short_url = f"https://avito.ru/{id_}"
         # Формируем сообщение для тг
         message = (
-                f"*{price}*\n[{name}]({full_url})\n{short_url}\n"
+                f"*{price}*\n{geo}\n[{name}]({full_url})\n{short_url}\n"
                 + (f"Продавец: {seller_name}\n" if seller_name else "")
         )
         try:
