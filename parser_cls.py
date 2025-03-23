@@ -214,6 +214,7 @@ class AvitoParse:
 
     def __pretty_log(self, data):
         """Красивый вывод для Telegram"""
+        seller_link = data.get("seller_link")
         geo = data.get("geo")
         price = data.get("price", "-")
         name = data.get("name", "-")
@@ -223,7 +224,7 @@ class AvitoParse:
         short_url = f"https://avito.ru/{id_}"
         # Формируем сообщение для тг
         message = (
-                f"*{price}*\n{geo}\n[{name}]({full_url})\n{short_url}\n"
+                f"*{price}*\n[{name}]({full_url})\n{short_url}\n{seller_link}\n"
                 + (f"Продавец: {seller_name}\n" if seller_name else "")
         )
         try:
@@ -274,6 +275,12 @@ class AvitoParse:
         if self.driver.find_elements(LocatorAvito.SELLER_NAME[1], by="css selector"):
             seller_name = self.driver.find_element(LocatorAvito.SELLER_NAME[1], by="css selector").text
             data["seller_name"] = seller_name
+            
+        """Профиль продавца"""
+        if self.driver.find_elements(LocatorAvito.SELLER_LINK[1], by="css selector"):
+            seller_link = self.driver.find_element(LocatorAvito.SELLER_LINK[1], by="css selector").text
+            data["seller_link"] = seller_link    
+            
 
         return data
 
